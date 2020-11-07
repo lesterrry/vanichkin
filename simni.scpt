@@ -11,11 +11,12 @@ COPYRIGHT LESTERRRY, 2020
 *)
 
 property link : missing value
---property usrname : "Айдар"
 try
 	tell application "Calendar"
 		tell calendar "SIMNI"
-			set link to get url of (first event where its start date is greater than or equal to (current date) - (2 * minutes) and start date is less than or equal to (current date))
+			set ev to first event where its start date is greater than or equal to (current date) - (2 * minutes) and start date is less than or equal to (current date)
+			set link to get url of ev
+			set end_date to get end date of ev
 		end tell
 	end tell
 on error
@@ -28,9 +29,9 @@ on error
 		delay 0.5
 		keystroke "We can work! Мы работаем!"
 	end tell
+	display notification "We can work!" with title "Мы работаем!" sound name "Frog"
 	quit me
 end try
-
 tell application "Google Chrome"
 	activate
 	open location link
@@ -49,12 +50,14 @@ tell application "System Events"
 		keystroke return
 		delay 0.5
 	end repeat
-	repeat 6 times
+	repeat 7 times
 		keystroke tab
 		delay 0.5
 	end repeat
-	--keystroke usrname
-	keystroke tab
-	delay 0.5
 	keystroke return
 end tell
+set exit_delay to end_date - (current date)
+display notification "We will leave in " & (exit_delay / 60) & " min" with title "Conference joined"
+delay exit_delay
+tell application "Google Chrome" to quit
+quit me
