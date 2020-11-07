@@ -11,6 +11,7 @@ COPYRIGHT LESTERRRY, 2020
 *)
 
 property link : missing value
+--property usrname : "Айдар"
 try
 	tell application "Calendar"
 		tell calendar "SIMNI"
@@ -36,14 +37,15 @@ tell application "Google Chrome"
 	activate
 	open location link
 end tell
-delay 1
+delay 2
 tell application "System Events"
+	key code 53
 	repeat 2 times
 		keystroke tab
 		delay 0.5
 	end repeat
 	keystroke return
-	delay 7
+	delay 10
 	repeat 2 times
 		keystroke tab
 		delay 0.5
