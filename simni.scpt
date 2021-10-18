@@ -1,8 +1,7 @@
 (*
 Sorry, I'm not interested
 This script automatically joins Microsoft Teams meetings on a specific time.
-Ensure you have Google Chrome installed and working normally out of the box.
-You will also need to explicitly grant permission in Settings.
+You will need to explicitly grant permission in Settings.
 To activate script, add new Calendar event in a specific calendar, named "SIMNI". 
 As an alert, add "launch app" action, and pass this script.
 Manually launch this script at first to try it out.
@@ -10,8 +9,12 @@ Manually launch this script at first to try it out.
 COPYRIGHT LESTERRRY, 2020
 *)
 
+-- Name to join meetings with
+global USERNAME
+set USERNAME to "Aydar"
+
 property link : missing value
---property usrname : "Айдар"
+
 try
 	tell application "Calendar"
 		tell calendar "SIMNI"
@@ -22,9 +25,9 @@ try
 	end tell
 on error
 	display dialog "No meeting found, let's just give it a try?" with icon caution
-	tell application "Google Chrome"
+	tell application "Safari"
 		activate
-		open location "https://ya.ru"
+		make new document with properties {URL:"https://ya.ru"}
 	end tell
 	tell application "System Events"
 		delay 0.5
@@ -33,33 +36,27 @@ on error
 	display notification "We can work!" with title "Мы работаем!" sound name "Frog"
 	quit me
 end try
-tell application "Google Chrome"
+tell application "Safari"
 	activate
-	open location link
-end tell
-delay 2
-tell application "System Events"
-	key code 53
-	repeat 2 times
-		keystroke tab
-		delay 0.5
-	end repeat
-	keystroke return
-	delay 10
-	repeat 2 times
-		keystroke tab
-		delay 0.5
-		keystroke return
-		delay 0.5
-	end repeat
-	repeat 7 times
-		keystroke tab
-		delay 0.5
-	end repeat
-	keystroke return
+	make new document with properties {URL:link}
+	delay 4
+	tell application "System Events" to key code 53
+	tell document 1
+		do JavaScript "document.querySelector('button[data-tid=\"joinOnWeb\"]').click();"
+		delay 10
+		do JavaScript "document.querySelector('button[track-summary=\"Toggle microphone OFF in meeting pre join screen\"]').click()"
+		delay 1
+		do JavaScript "document.querySelector('button[track-summary=\"Toggle camera OFF in meeting pre join screen\"]').click()"
+		delay 1
+		do JavaScript "document.querySelector('input[id=\"username\"]').value = '" & USERNAME & "'"
+		delay 1
+		do JavaScript "document.querySelector('button[track-summary=\"join meeting from pre-join screen\"]').click()"
+	end tell
 end tell
 set exit_delay to end_date - (current date)
-display notification "We will leave in " & (exit_delay / 60) & " min" with title "Conference joined"
+display notification "We will leave in " & (exit_delay / 60) & " min" with title "Conference joined" sound name "Frog"
 delay exit_delay
-tell application "Google Chrome" to quit
+tell application "Safari"
+	tell document 1 to close
+end tell
 quit me
