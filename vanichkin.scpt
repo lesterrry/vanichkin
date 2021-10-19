@@ -1,12 +1,12 @@
 (*
-Sorry, I'm not interested
+Vanichkin
 This script automatically joins Microsoft Teams meetings on a specific time.
 You will need to explicitly grant permission in Settings.
 To activate script, add new Calendar event in a specific calendar, named "SIMNI". 
 As an alert, add "launch app" action, and pass this script.
 Manually launch this script at first to try it out.
 ****************************************************************
-COPYRIGHT LESTERRRY, 2020
+COPYRIGHT LESTERRRY, 2021
 *)
 
 -- Name to join meetings with
@@ -43,7 +43,7 @@ tell application "Safari"
 	tell application "System Events" to key code 53
 	tell document 1
 		do JavaScript "document.querySelector('button[data-tid=\"joinOnWeb\"]').click();"
-		delay 10
+		delay 30
 		do JavaScript "document.querySelector('button[track-summary=\"Toggle microphone OFF in meeting pre join screen\"]').click()"
 		delay 1
 		do JavaScript "document.querySelector('button[track-summary=\"Toggle camera OFF in meeting pre join screen\"]').click()"
